@@ -11,26 +11,13 @@
  */
 class Solution {
 public:
-    void isBST(TreeNode* root, int& carry, bool& validBST, bool& start){
-       if(root){
-           isBST(root -> left,carry,validBST,start);
-           if(!start){
-                carry = root -> val;
-                start = true;
-           }else if(carry >= root -> val)
-               validBST = false;
-           else
-               carry = root -> val;
-           isBST(root ->right,carry,validBST,start);
-               
-       }
+    bool isValidBST(TreeNode* root) {
+        return help(root, LONG_MIN, LONG_MAX);
     }
     
-    
-    bool isValidBST(TreeNode* root) {
-        bool isValid = true,start = false;
-        int carry = 0;
-        isBST(root,carry,isValid,start);
-        return isValid;
+    bool help(TreeNode* root, long min, long max){
+        if(!root)   return true;
+        if(root->val <= min || root->val >= max)  return false;
+        return help(root->left, min, root->val) && help(root->right, root->val, max);
     }
 };

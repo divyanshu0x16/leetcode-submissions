@@ -9,26 +9,33 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-class Solution {
+class Solution
+{
 public:
-    TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder) {
-    return create(preorder, inorder, 0, preorder.size() - 1, 0, inorder.size() - 1);
-}
+    int preorderIndex;
+    map<int, int> inorderIndexMap;
 
-TreeNode* create(vector<int>& preorder, vector<int>& inorder, int ps, int pe, int is, int ie){
-    if(ps > pe){
-        return nullptr;
+    TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder)
+    {
+        preorderIndex = 0;
+        for (int i = 0; i < inorder.size(); i++)
+            inorderIndexMap[inorder[i]] = i;
+
+        return arrayToTree(preorder, 0, preorder.size() - 1);
     }
-    TreeNode* node = new TreeNode(preorder[ps]);
-    int pos;
-    for(int i = is; i <= ie; i++){
-        if(inorder[i] == node->val){
-            pos = i;
-            break;
-        }
+
+private:
+    TreeNode *arrayToTree(vector<int> &preorder, int left, int right)
+    {
+        if( left > right) return NULL;
+
+        int rootValue = preorder[preorderIndex++];
+
+        TreeNode* root = new TreeNode(rootValue);
+
+        root->left = arrayToTree(preorder, left, inorderIndexMap[rootValue] -1);
+        root->right = arrayToTree(preorder, inorderIndexMap[rootValue]+1, right);
+
+        return root;
     }
-    node->left = create(preorder, inorder, ps + 1, ps + pos - is, is, pos - 1);
-    node->right = create(preorder, inorder, pe - ie + pos + 1, pe, pos + 1, ie);
-    return node;
-}
 };

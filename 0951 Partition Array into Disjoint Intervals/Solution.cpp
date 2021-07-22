@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int partitionDisjoint(vector<int> &nums)
+    {
+
+        int n = nums.size();
+
+        vector<int> maxLeft(n);
+        vector<int> minRight(n);
+
+        int m = nums[0];
+        for (int i = 0; i < n; i++)
+        {
+            m = max(m, nums[i]);
+            maxLeft[i] = m;
+        }
+
+        m = nums[n - 1];
+        for (int i = n-1; i >= 0; i--)
+        {
+            m = min(m, nums[i]);
+            minRight[i] = m;
+        }
+
+        for (int i = 1; i < n; i++)
+            if (maxLeft[i - 1] <= minRight[i])
+                return i;
+
+        return 1;
+    }
+};

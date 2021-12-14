@@ -11,19 +11,21 @@
  */
 class Solution {
 public:
-    int sum=0;
-    int inorder(TreeNode* root,int L,int R)
-    {
-        if(root){
-        inorder(root->left,L,R);
-        if(root->val>=L && root->val<=R)
-            sum+=root->val;
-        inorder(root->right,L,R);
-        }
-        return sum;
+    int sum = 0;
+    
+    void dfs(TreeNode* root, int low, int high){
+        //Base case
+        if(!root) return;
+        //If the value is in range, we add
+        if(root -> val >= low and root->val <= high) sum += root->val;
+        //Going further into the depth of the tree
+        if(root->val > low) dfs(root->left, low, high);
+        if(root->val < high) dfs(root->right, low, high);
     }
-    int rangeSumBST(TreeNode* root, int L, int R) {
-        if(!root)return 0;
-        return inorder(root,L,R);
+    
+    int rangeSumBST(TreeNode* root, int low, int high) {
+        sum = 0;
+        dfs(root, low, high);
+        return sum;
     }
 };

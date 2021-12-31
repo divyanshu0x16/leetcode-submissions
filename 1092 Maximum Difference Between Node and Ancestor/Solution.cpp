@@ -9,12 +9,34 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+
 class Solution {
 public:
-    int maxAncestorDiff(TreeNode* r, int mn = 100000, int mx = 0) {
-  if (r == nullptr) return mx - mn;
-  mx = max(mx, r->val);
-  mn = min(mn, r->val);
-  return max(maxAncestorDiff(r->left, mn, mx), maxAncestorDiff(r->right, mn, mx));
-}
+    int result = 0;
+
+    int maxAncestorDiff(TreeNode* root) {
+        if(root == NULL){
+            return 0;
+        }
+        result = 0;
+        helper(root, root->val, root->val);
+        return result;
+    }
+
+    void helper(TreeNode* node, int curMax, int curMin){
+        if(node == NULL){
+            return;
+        }
+        //update result
+        int possibleResult = max(abs(curMax - node->val), abs(curMin - node->val));
+        result = max(result, possibleResult);
+
+        curMax = max(curMax, node->val);
+        curMin = min(curMin, node->val);
+
+        helper(node->left, curMax, curMin);
+        helper(node->right, curMax, curMin);
+
+        return;
+    }
 };

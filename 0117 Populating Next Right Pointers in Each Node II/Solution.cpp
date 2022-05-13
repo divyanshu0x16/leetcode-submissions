@@ -20,37 +20,38 @@ class Solution {
 public:
     Node* connect(Node* root) {
         dfs(root);
-        return root;
+        return root; 
     }
     
     void dfs(Node* root)
     {
-        if(root==nullptr)
+        if(root == nullptr)
             return;
-
-        if(root->right)
+        
+        if(root -> right)
         {
-            root->right->next=GetNext(root);
+            root->right->next = GetNext(root);
         }
         dfs(root->right);
         
         if(root->left)
         {
-            if(root->right) root->left->next=root->right;
-            else root->left->next=GetNext(root);
+            if(root->right) root->left->next = root->right;
+            else root->left->next = GetNext(root);
         }
         dfs(root->left);
     }
     
     Node* GetNext(Node* root)
     {
-        Node* next=root->next;
+        Node* next = root->next;
         while(next)
         {
             if(next->left) return next->left;
             else if(next->right) return next->right;
-            next=next->next;
+            next = next->next;
         }
         return nullptr;
     }
+    
 };

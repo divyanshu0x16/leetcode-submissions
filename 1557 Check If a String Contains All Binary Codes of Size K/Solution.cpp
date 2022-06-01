@@ -1,13 +1,26 @@
 class Solution {
 public:
     bool hasAllCodes(string s, int k) {
-        unordered_set<string> us;
+        const int powTwoOfK = 1 << k;
         
-        for(int i = 0; i + k <= s.size(); i++ )
-        {
-            us.insert(s.substr(i, k));
+        int need = powTwoOfK;
+        vector<bool> found(need, false);
+        
+        int curr = 0;
+        for (int i=0; i<s.size(); i++) {
+            curr <<= 1; // shift left
+            curr &= ~powTwoOfK; // remove kth bit
+            if (s[i] == '1') curr |= 1; // on first bit if s[i] == 1
+            
+            if (i >= k-1 && !found[curr]) {
+                found[curr] = true;
+                need--;
+                if (need == 0) {
+                    return true;
+                }
+            }
         }
-        return us.size() == 1 << k;
-        
+    
+        return false;
     }
 };

@@ -1,12 +1,15 @@
 class Solution {
 public:
+    //cell(i, j) = sum of paths from cell(i+1, j) and cell(i, j+1)
+    int solve(int i, int j, vector<vector<int>> &dp, int& m, int& n){
+        if(i == m-1 or j == n-1) return 1;
+        if(dp[i][j] != 0) return dp[i][j];
+
+        dp[i][j] = solve(i+1, j, dp, m, n) + solve(i, j+1, dp, m, n);
+        return dp[i][j];
+    }
     int uniquePaths(int m, int n) {
-        vector<vector<int> > dp(m, vector<int>(n,1));
-        for(int i = 1; i < m; i++){
-            for(int j = 1; j < n; j++){
-                dp[i][j] = dp[i-1][j] + dp[i][j-1];
-            }
-        }
-        return dp[m-1][n-1];
+        vector<vector<int> > dp(m, vector<int>(n, 0));
+        return solve(0, 0, dp, m, n);
     }
 };

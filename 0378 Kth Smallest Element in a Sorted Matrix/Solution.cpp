@@ -9,14 +9,14 @@ public:
 		{
 			mid = le + (ri-le)/2;
 			int num = 0;
-			for (int i = 0; i < n; i++)
+			for (int i = 0; i < n; i++) // Important: For Loop, to find the current position of mid in matrix
 			{
 				int pos = upper_bound(matrix[i].begin(), matrix[i].end(), mid) - matrix[i].begin();
 				num += pos;
 			}
 			if (num < k)
 			{
-				le = mid + 1;
+				le = mid + 1; //Since our current num is less than k, we have to increase this num, i.e. to k find the kth smallest element, 'mid' must higher. Hence increase left
 			}
 			else
 			{
